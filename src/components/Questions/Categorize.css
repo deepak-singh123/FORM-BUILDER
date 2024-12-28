@@ -1,0 +1,180 @@
+.categorize-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.categorize-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.categorize-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.categorise-header-title{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.points-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.points-input label {
+    font-weight: bold;
+    color: #555;
+}
+
+.points-input input {
+    width: 80px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    
+}
+
+.description-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.field {
+    margin-bottom: 20px;
+}
+.field-titles{
+display: flex;
+align-items: center;
+justify-content: start;
+gap: 330px;
+margin: 20px 0;
+
+}
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+input, select {
+    width: 90%;
+    height: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    
+}
+
+.add-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+    background-color: #0056b3;
+}
+
+.item-input, .category-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.item-input select {
+    width: auto;
+    flex: 1;
+}
+.item-input{
+    display: inline-flex !important;
+}
+.category-input{
+    display: flex;
+    align-items: center !important;
+    justify-content: start !important;
+    margin: 20px auto;
+}
+.category-input input {
+    max-width:200px;
+}
+
+.item-input{
+    display: flex;
+    align-items: center ;
+    justify-content: start;
+    gap: 80px;
+    margin:20px 0;
+}
+
+.item-input input {
+    max-width: 200px;;
+}
+
+
+.option-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.postinputimage {
+    position: absolute;
+    opacity: 0;
+    width: 0px;
+    height: 0px;
+    cursor: pointer;
+}
+
+.option-btn svg {
+    pointer-events: none;
+}
+
+.description-image{
+    display: flex;
+    
+    justify-content: start;
+    margin: 20px auto;
+}
+.description-image img{
+    position: relative;
+    left:10px;
+    width:100px;
+    height:100px;
+    border-radius: 15px;
+  }
+
+
+  .header-delete-button{
+    position: relative;
+    top:-10px;
+    right:-5px;
+  }
+
+  
+  

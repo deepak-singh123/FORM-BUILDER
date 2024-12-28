@@ -1,0 +1,50 @@
+.task-adder {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  
+  .add-icon {
+    font-size: 24px;
+    color: #007bff; /* Adjust color as needed */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .add-icon:hover {
+    transform: scale(1.2);
+  }
+  
+  label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .task-type {
+    font-size: 16px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #555;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .task-type:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  .task-type option {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .add-icon{
+    background:none;
+    border: none;
+  }

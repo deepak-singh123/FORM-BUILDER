@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { RiDeleteBack2Fill } from "react-icons/ri";
-
+import "./Header.css";
 
 const Header = ({ onSave, onPreview, onImageUpload }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -26,7 +26,6 @@ const Header = ({ onSave, onPreview, onImageUpload }) => {
         }
         else { console.log("No file selected"); }
     };
- console.log("si=",selectedImage);
   return (
     <div className="header-container">
       <input
