@@ -2,25 +2,39 @@
 import mongoose from "mongoose";
 
 // Schema for a single question
-const QuestionSchema = new mongoose.Schema({
+export const QuestionSchema = new mongoose.Schema({
   type: {
     type: String,
-    required: true, 
+    
   },
   prompt: {
     type: String,
-    required: true,
+    
   },
   image: {
     type: String, 
   },
   categories: [
     {
+      id: String,
       name: String,
-      items: [String],
+     
     },
   ],
-  options: [String], 
+  items:[
+    { id: String,
+      text: String,
+      category: String,
+    }
+  ],
+  options: [
+    {
+      id: { type: String, required: true },
+      text: { type: String, required: false },
+      isselected: { type: Boolean, required: true },
+      type: { type: String, required: false }, // Optional
+    },
+  ],
   blanks: [
     {
       index: Number, 
@@ -30,11 +44,18 @@ const QuestionSchema = new mongoose.Schema({
   description: {
     type: String, 
   },
+  preview:{
+    type: String,
+  },
+  sentence: {
+    type: String, 
+  },
   feedback: {
     type: String, 
   },
   points: {
     type: Number, 
+    default:null
   },
 });
 

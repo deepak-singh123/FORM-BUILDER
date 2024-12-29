@@ -1,0 +1,62 @@
+.mcq{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+  
+}
+
+.submcq-container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    
+    padding: 20px;
+}
+.mcq-header{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+}
+.mcq-header input{
+    width: 500px;
+}
+.mcq{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 600px;
+    border: 1px solid black;
+    padding: 20px;
+}
+.options{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items:   start;
+}
+.option{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    
+    
+}
+.option-checkbox{
+    width: 20px;
+    height: 20px;
+}
+.option-input{
+    width: 300px;
+}
+.add-option{
+    margin-top: 20px;
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+}

@@ -94,3 +94,7 @@
   .preview-button:hover {
     background-color: #e0a800;
   }
+  .reset-button{
+    background:none;
+    border:none;
+  }

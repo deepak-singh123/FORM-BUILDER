@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Categorize.css";
 import { RxDragHandleDots2 } from "react-icons/rx";
 import { CiCircleRemove } from "react-icons/ci";
@@ -6,16 +6,39 @@ import { FaImage } from "react-icons/fa";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { v4 as uuidv4 } from "uuid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useDispatch } from "react-redux";
+import { addOrUpdateQuestion } from "../../store/quesSlice";
 
-export const Categorize = ({ Qno }) => {
+export const Categorize = ({ Qno ,question}) => {
   const [categories, setCategories] = useState([{ id: uuidv4(), name: "" }]);
   const [items, setItems] = useState([
     { id: uuidv4(), text: "", category: "" },
   ]);
-  const [points, setPoints] = useState("");
-  const [catdescription, setcatdescription] = useState(" ");
+  const [points, setPoints] = useState(null);
+  const [catdescription, setcatdescription] = useState("");
   let [file, setfile] = useState(null);
+  const [descimageloading,setdescimageloading]= useState(false);
   const [selecteddescImage, setSelecteddescImage] = useState(null);
+  const dispatch = useDispatch();
+  useEffect(() => {
+  if(question){
+    if(question.image){
+      setSelecteddescImage(question.image);
+    }
+    if(question.description){
+      setcatdescription(question.description);
+    }
+    if(question.points){
+      setPoints(question.points);
+    }
+    if(question.categories){
+      setCategories(question.categories);
+    }
+    if(question.items){
+      setItems(question.items);
+    }
+  }
+},[])
 
   const handleCategoryChange = (index, value) => {
     const updatedCategories = [...categories];
@@ -31,6 +54,7 @@ export const Categorize = ({ Qno }) => {
     updatedItems[index] = { ...updatedItems[index], text: value };
 
     setItems(updatedItems);
+   
   };
 
   const handleremove = (index, type) => {
@@ -48,32 +72,54 @@ export const Categorize = ({ Qno }) => {
     setCategories([...categories, { id: uuidv4(), name: "" }]);
   };
 
-  const handledescimage = (e) => {
-    const uploadedFile = e.target.files[0];
-    if (uploadedFile) {
-      setfile(uploadedFile);
-      const reader = new FileReader();
-      reader.onload = () => setSelecteddescImage(reader.result);
-      reader.readAsDataURL(uploadedFile);
-    } else {
-      console.log("No file selected");
-    }
-  };
+  const handledescimage = async (e) => {
+    file = e.target.files[0];
+        if (file) {
+            setfile(file);
+            const reader = new FileReader();
+            reader.onload = () => {
+                setSelecteddescImage(reader.result);
+            }
+            reader.readAsDataURL(file);
+            const formData = new FormData();
+            formData.append("file", file);
 
+            try{
+                setdescimageloading(true);
+                const response = await fetch("http://localhost:3000/image-upload", {
+                  method: "POST",
+                  body: formData,
+                });
+                if (!response.ok) {
+                    setdescimageloading(false);
+                  throw new Error("Network response was not ok");
+                }
+                const data = await response.json();
+                setdescimageloading(false);
+
+                setSelecteddescImage(data.url);
+            }
+            catch(error){
+                console.error(error);
+                setSelecteddescImage(null);
+                setdescimageloading(false);
+            }
+        }
+        else { console.log("No file selected"); }
+  };
   const handledescription = (e) => {
     setcatdescription(e.target.value);
   };
-
   const handleItemCategoryChange = (index, category) => {
-    const updatedItems = [...items];
-    updatedItems[index].category = category;
+    const updatedItems = items.map((item, idx) =>
+      idx === index ? { ...item, category } : item
+    );
     setItems(updatedItems);
   };
 
   const addItem = () => {
     setItems([...items, { id: uuidv4(), text: "", category: "" }]);
   };
-  console.log(items);
 
   const handleDragEnd = (result) => {
     console.log(result);
@@ -114,6 +160,24 @@ export const Categorize = ({ Qno }) => {
       }
     }
   };
+
+  const saveDataToRedux = () => {
+    const questionData = {
+      type: "categorize",
+      points,
+      description: catdescription,
+      categories,
+      items,
+      image: selecteddescImage,
+    };
+    dispatch(addOrUpdateQuestion({ index: Qno, questionData }));
+  };
+
+
+  useEffect(() => {
+    saveDataToRedux();
+  }, [categories, items, points, catdescription, selecteddescImage]);
+
   return (
     <div className="categorize-container">
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -143,7 +207,7 @@ export const Categorize = ({ Qno }) => {
               value={catdescription}
               onChange={(e) => handledescription(e)}
             />
-
+            
             <button className="option-btn">
               <input
                 className="postinputimage"
