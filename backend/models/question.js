@@ -50,6 +50,37 @@ export const QuestionSchema = new mongoose.Schema({
   sentence: {
     type: String, 
   },
+  passage:{
+    type: String,
+  },
+  subquestions: [
+    {
+      id: {
+        type: String,
+        required: true, 
+      },
+      question: {
+        type: String,
+        required: false,
+      },
+      options: [
+        {
+          id: {
+            type: String,
+            required: true, 
+          },
+          value: {
+            type: String,
+            required: false,
+          },
+          isanswer: {
+            type: Boolean,
+            default: false, 
+          },
+        }
+      ],
+    }
+  ],
   feedback: {
     type: String, 
   },

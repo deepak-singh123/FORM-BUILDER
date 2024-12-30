@@ -1,150 +1,170 @@
-
 import React, { useEffect, useState } from "react";
 import "./Categorize.css";
-import "./mcq.css"
+import "./mcq.css";
 import { RxDragHandleDots2 } from "react-icons/rx";
-import { CiCircleRemove } from "react-icons/ci";
 import { FaImage } from "react-icons/fa";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { v4 as uuidv4 } from "uuid";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useDispatch } from "react-redux";
-import { addOrUpdateQuestion } from "../../store/quesSlice";
 import Submcq from "./Submcq";
+import { addOrUpdateQuestion } from "../../store/quesSlice";
+import { useDispatch } from "react-redux";
 
-
-
-const Mcq = ({ Qno, question }) => {
-
-    
+const Mcq = ({ Qno,question }) => {
   const [points, setPoints] = useState(null);
-  const [catdescription, setcatdescription] = useState("");
-  let [file, setfile] = useState(null);
-  const [descimageloading,setdescimageloading]= useState(false);
-  const [selecteddescImage, setSelecteddescImage] = useState(null);
-  const [subquestions, setSubquestions] = useState([{id:uuidv4(),question:""}]);
+  const [catdescription, setCatDescription] = useState("");
+  const [file, setFile] = useState(null);
+  const [descImageLoading, setDescImageLoading] = useState(false);
+  const [selectedDescImage, setSelectedDescImage] = useState(null);
+  const [subquestions, setSubquestions] = useState([{ id: uuidv4(), question: "" }]);
   const dispatch = useDispatch();
-  
 
+  useEffect(() => {
+    if(question){
+      if(question.image){
+        setSelectedDescImage(question.image);
+      }
+      if(question.passage){
+        setCatDescription(question.passage);
+      }
+      if(question.points){
+        setPoints(question.points);
+      }
+      if(question.subquestions){
+        setSubquestions(question.subquestions);
+      }
+      
+    }
+  },[])
 
-  const handledescimage = async (e) => {
-    file = e.target.files[0];
-        if (file) {
-            setfile(file);
-            const reader = new FileReader();
-            reader.onload = () => {
-                setSelecteddescImage(reader.result);
-            }
-            reader.readAsDataURL(file);
-            const formData = new FormData();
-            formData.append("file", file);
+  const handleDescImage = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFile(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedDescImage(reader.result);
+      };
+      reader.readAsDataURL(file);
 
-            try{
-                setdescimageloading(true);
-                const response = await fetch("http://localhost:3000/image-upload", {
-                  method: "POST",
-                  body: formData,
-                });
-                if (!response.ok) {
-                    setdescimageloading(false);
-                  throw new Error("Network response was not ok");
-                }
-                const data = await response.json();
-                setdescimageloading(false);
+      const formData = new FormData();
+      formData.append("file", file);
 
-                setSelecteddescImage(data.url);
-            }
-            catch(error){
-                console.error(error);
-                setSelecteddescImage(null);
-                setdescimageloading(false);
-            }
+      try {
+        setDescImageLoading(true);
+        const response = await fetch("http://localhost:3000/image-upload", {
+          method: "POST",
+          body: formData,
+        });
+        if (!response.ok) {
+          setDescImageLoading(false);
+          throw new Error("Network response was not ok");
         }
-        else { console.log("No file selected"); }
+        const data = await response.json();
+        setDescImageLoading(false);
+        setSelectedDescImage(data.url);
+      } catch (error) {
+        console.error(error);
+        setSelectedDescImage(null);
+        setDescImageLoading(false);
+      }
+    } else {
+      console.log("No file selected");
+    }
+  };
+ console.log(subquestions);
+  const handleDescription = (e) => {
+    setCatDescription(e.target.value);
   };
 
-
-  const handledescription = (e) => {
-    setcatdescription(e.target.value);
+  const saveDataToRedux = () => {
+    const questionData = {
+      type: "comprehention",
+      passage: catdescription,
+      subquestions,
+      image: selectedDescImage,
+    };
+    dispatch(addOrUpdateQuestion({ index: Qno, questionData }));
   };
-
-
-
-    return (
-        <>
-        <div className="categorize-container">
-             <div className="categorize-header">
-             <div className="categorise-header-title">
-             <div className="drag-icon">
-              <RxDragHandleDots2 size={30} />
-            </div>
-            <h2> Question {Qno + 1} </h2>
+  useEffect(() => {
+    saveDataToRedux();
+  }, [subquestions, points, catdescription, selectedDescImage]);
+  return (
+    <div className="categorize-container">
+      <div className="categorize-header">
+        <div className="categorize-header-title">
+          <div className="drag-icon">
+            <RxDragHandleDots2 size={30} />
           </div>
-          <div className="points-input">
-            <label>Points:</label>
+          <h2>Question {Qno + 1}</h2>
+        </div>
+        <div className="points-input">
+          <label>Points:</label>
+          <input
+            type="number"
+            value={points || ""}
+            onChange={(e) => setPoints(e.target.value)}
+            placeholder="Enter points"
+          />
+        </div>
+      </div>
+
+      <div className="field">
+        <div className="description-input">
+          <input
+            type="text"
+            placeholder="Passage"
+            value={catdescription}
+            onChange={handleDescription}
+          />
+          <button className="option-btn">
             <input
-              type="number"
-              value={points}
-              onChange={(e) => setPoints(e.target.value)}
-              placeholder="Enter points"
+              className="postinputimage"
+              type="file"
+              accept="image/*,video/*"
+              onChange={handleDescImage}
             />
-          </div>
+            <FaImage size={40} />
+          </button>
         </div>
 
-        <div className="field">
-          <div className="description-input">
-            <input
-              type="text"
-              placeholder="Passage"
-              value={catdescription}
-              onChange={(e) => handledescription(e)}
+        {selectedDescImage && (
+          <div className="description-image">
+            <img
+              src={selectedDescImage}
+              alt="Selected"
+              className="selected-image"
             />
-            
-            <button className="option-btn">
-              <input
-                className="postinputimage"
-                type="file"
-                accept="image/*,video/*"
-                onChange={handledescimage}
-              />
-              <FaImage size={40} />
-            </button>
-          </div>
-
-          {selecteddescImage && (
-            <div className="description-image">
-              <img
-                src={selecteddescImage}
-                alt="Selected Image"
-                className="selected-image"
-              />
-              <div
-                className="header-delete-button"
-                onClick={() => setSelecteddescImage(null)}
-              >
-                <RiDeleteBack2Fill size={30} />
-              </div>
+            <div
+              className="header-delete-button"
+              onClick={() => setSelectedDescImage(null)}
+            >
+              <RiDeleteBack2Fill size={30} />
             </div>
-          )}
+          </div>
+        )}
 
-          {subquestions && subquestions.map((ques,index)=>{
-            return(
-              <>
-                <Submcq key={ques.id} Qno={Qno} ques={ques} subquestions={subquestions} index={index}/>
-              </>)
-          })}
+        {subquestions.map((ques, index) => (
+          <Submcq
+            key={ques.id}
+            Qno={Qno}
+            question={ques.question}
+            index={index}
+            subquestions={subquestions}
+            setSubquestions={setSubquestions}
+          />
+        ))}
 
-<button className="add-option" onClick={() => setSubquestions([...subquestions, {id:uuidv4(),question:" "}])}>
-            Add Question
+        <button
+          className="add-option"
+          onClick={() =>
+            setSubquestions([...subquestions, { id: uuidv4(), question: "" }])
+          }
+        >
+          Add Question
         </button>
-        
-        </div>
-        
-        </div>
-        </>
-    )
+      </div>
+    </div>
+  );
 };
 
-
-
-export default Mcq
+export default Mcq;

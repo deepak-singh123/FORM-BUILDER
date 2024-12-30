@@ -1,0 +1,23 @@
+.rendering-header {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 20px 0;
+}
+
+.title-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title-container h2{
+    border-bottom: 1px solid #ccc;
+}
+
+.rendering-header img{
+    width:500px;
+    height: 500px;
+    border-radius: 15px;
+    object-fit: cover;
+}
