@@ -157,7 +157,6 @@ const handleAddOption = () => {
     setUnderlinedWords(items);
   };
 
-  console.log(question);
 
   const saveDataToRedux = () => {
     const questionData = {

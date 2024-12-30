@@ -7,11 +7,11 @@ import Mcq from "./mcq";
 
 export const Questionlist = () => {
     const dispatch = useDispatch();
-
+    const uid = useSelector((store) => store.questions.uid);
     // Fetch questions when the component mounts
     useEffect(() => {
-        dispatch(fetchquestions());
-    }, [dispatch]);
+        dispatch(fetchquestions(uid));
+    }, [dispatch,uid]);
 
     // Access questions from the Redux store
     const questions = useSelector((store) => store.questions.questions);
@@ -36,7 +36,7 @@ console.log("question=",questions);
                             </li>
                         ))
                     ) : (
-                        <li>No questions available.</li>
+                        <li></li>
                     )}
                 </ul>
             </div>

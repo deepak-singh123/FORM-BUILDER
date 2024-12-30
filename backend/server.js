@@ -50,26 +50,35 @@ app.post("/image-upload", upload.single("file"), async (req, res) => {
     }
   });
 
-  app.post("/save-form", async (req, res) => {
+  app.post("/save-form/:id", async (req, res) => {
+    console.log("req params=",req.params);
     const data = req.body;
-    const clientIp =
-        req.headers["x-forwarded-for"] || // For users behind a proxy
-        req.connection.remoteAddress; // For local development
-        console.log(clientIp);
+    const {id}=req.params;
+
+    console.log("id=",id);
+    const clientIp =req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+
+      let uid = `${clientIp}-default-form`;
+      if (typeof id === 'string' ){
+        uid=id;
+      }
+      
+      console.log("uid=",uid);
     if (!data) {
       return res.status(400).json({ message: "No data provided" });
     }
   
     try {
       // Check if a form with the UID exists
-      const form = await Form.findOne({ uid: `${clientIp}-"default-form"` });
+      console.log("uid= in save form",uid);
+      const form = await Form.findOne({ uid: uid });
   
       if (!form) {
         await Form.create({
           title: data.title,
           headerImage: data.headerImage,
           questions: data.questions,
-          uid: `${clientIp}-"default-form"`,
+          uid: uid,
         });
       } else {
         await form.updateOne({
@@ -86,19 +95,26 @@ app.post("/image-upload", upload.single("file"), async (req, res) => {
     }
   });
   
-app.get("/getform", async (req, res) => {
+app.get("/getform/:id", async (req, res) => {
     console.log("inside get form");
+    const {id}=req.params;
     const clientIp =
         req.headers["x-forwarded-for"] || // For users behind a proxy
         req.connection.remoteAddress; // For local development
         console.log(clientIp);
+
+        let uid = `${clientIp}-default-form`;
+        if (typeof id === 'string' ){
+          uid=id;
+        }
+        console.log("uid=",uid);
     try {
-      const form = await Form.findOne({ uid: `${clientIp}-"default-form"` });
+      const form = await Form.findOne({ uid: uid });
   
       if (!form) {
         return res.status(404).json({ message: "Form not found" });
       }
-      console.log(form);
+      
       return res.status(200).json(form);
     } catch (error) {
       console.error("Error fetching form:", error);

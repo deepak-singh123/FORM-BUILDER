@@ -4,6 +4,8 @@ import "./Header.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchquestions, resetQuestions } from "../../store/quesSlice";
 import { RiResetLeftFill } from "react-icons/ri";
+import { v4 as uuidv4 } from "uuid";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -14,7 +16,9 @@ const Header = () => {
   const form = useSelector((store) => store.questions);
   const dispatch = useDispatch();
   const questions= form.questions;
-
+  const navigate = useNavigate();
+  const uid = useSelector((store) => store.uid.uid);
+  console.log(uid);
   useEffect(() => {
    dispatch(fetchquestions()).unwrap();
   },[dispatch])
@@ -93,7 +97,8 @@ console.log(questions);
     questions:questions
   }
  try{
-  const response = await fetch("http://localhost:3000/save-form", {
+  
+  const response = await fetch(`http://localhost:3000/save-form/${null}`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -116,6 +121,46 @@ console.log(questions);
   }
 }
 }
+
+const handlerenderer = async () => {
+   // Generate a unique ID for the form
+  console.log(uid);
+
+  if (!loading) {
+    setsavestatus("Saving...");
+    const data = {
+      title: quizTitle,
+      headerImage: selectedImage,
+      questions: questions,
+    };
+
+    try {
+      const response = await fetch(`http://localhost:3000/save-form/${uid}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        setloading(false);
+        throw new Error("Network response was not ok");
+      }
+
+      const message = await response.json();
+      console.log("Success:", message);
+      navigate(`/renderer/${uid}`); // Navigate to the renderer page
+    } catch (error) {
+      console.error(error);
+      setsavestatus("Save");
+    }
+  }
+};
+
+
+
   return (
     <div className="header-container">
       <input
@@ -153,9 +198,10 @@ console.log(questions);
           {savestatus}
         </button>
 
-        <button className="save-button">
+       <button className="save-button" onClick={handlerenderer}>
           Save & next
         </button>
+        
       </div>
     </div>
   );

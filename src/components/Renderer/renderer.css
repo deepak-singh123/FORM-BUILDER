@@ -1,23 +1,32 @@
+.renderer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
 .rendering-header {
   display: flex;
   align-items: center;
   flex-direction: column;
+  width: 95%;
+  height:100%;
   margin: 20px 0;
 }
 
 .title-container{
+    width: 95%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px solid black;
+    padding: 10px 0;
 }
 
-.title-container h2{
-    border-bottom: 1px solid #ccc;
-}
 
 .rendering-header img{
-    width:500px;
-    height: 500px;
+    width:95%;
+    height: 400px;
     border-radius: 15px;
     object-fit: cover;
+    margin-top: 5px;
 }

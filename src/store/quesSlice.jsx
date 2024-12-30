@@ -1,15 +1,18 @@
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
   title:"",
   headerImage:null,
   questions: [],
+  
 };
 
-export const fetchquestions = createAsyncThunk('questions/fetchQuestions', async () => {
+export const fetchquestions = createAsyncThunk('questions/fetchQuestions', async (uid) => {
     try{
-  const response = await fetch('http://localhost:3000/getform',{
+      console.log(uid);
+  const response = await fetch(`http://localhost:3000/getform/${uid}`,{
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
