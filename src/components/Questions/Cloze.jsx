@@ -41,7 +41,7 @@ const Cloze = ({ Qno, question }) => {
     underlinedWords.forEach((word) => {
       
       if(word.type !== "extra"){
-      const regex = new RegExp(\\b${word.text}\\b, "g");
+      const regex = new RegExp(`\\b${word.text}\\b`, "g");
       preview = preview.replace(regex, "___");}
     });
 
@@ -261,7 +261,7 @@ const handleAddOption = () => {
                             type="text"
                             value={word.text}
                             onChange={(e) => handleWordTextChange(index, e.target.value)}
-                            placeholder={Option ${index + 1}}
+                            placeholder={`Option ${index + 1}`}
                             className="option-input"
                           />
                           <CiCircleRemove
