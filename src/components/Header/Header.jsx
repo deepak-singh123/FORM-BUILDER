@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { RiDeleteBack2Fill } from "react-icons/ri";
-import "./Header.css";
+import "./header.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchquestions, resetQuestions } from "../../store/quesSlice";
 import { RiResetLeftFill } from "react-icons/ri";
