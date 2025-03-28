@@ -63,6 +63,7 @@ useEffect(() => {
 }
 if(form) console.log(form.questions);
 
+console.log("Questions:", form?.questions);
 
 
 
@@ -93,7 +94,7 @@ if(form) console.log(form.questions);
                                 {question.type === "categorize" && (
                                     <Catrender data={question} Qno={index+1} index={index} answers={answers}/>
                                 )}
-                               {question.type === "cloze" && (
+                               {question.type === "cloze" && question.preview && (
                                     <Fillrenderer data={question} Qno={index+1} index={index} answers={answers}/>
                                 )}
                             </div>
