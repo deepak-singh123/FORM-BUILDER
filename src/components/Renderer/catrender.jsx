@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Catrenderer.css";
+import "./catrenderer.css";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const Catrender = ({ data, Qno ,answers ,index}) => {
