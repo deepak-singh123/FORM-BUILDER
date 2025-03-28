@@ -32,7 +32,7 @@ export const QuestionSchema = new mongoose.Schema({
       id: { type: String, required: true },
       text: { type: String, required: false },
       isselected: { type: Boolean, required: true },
-      type: { type: String, required: false }, // Optional
+      type: { type: String, required: false }, 
     },
   ],
   blanks: [

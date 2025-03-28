@@ -21,3 +21,5 @@ const ResponseSchema = new mongoose.Schema({
       default: Date.now,
     },
   });
+
+  export const Response = mongoose.model("Response", ResponseSchema);

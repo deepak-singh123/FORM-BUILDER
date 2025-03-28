@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 const Catrender = ({ data, Qno ,answers ,index}) => {
   const { description, points, image, items, categories } = data;
   const colors = ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff"];
-
+console.log(data);
   const [categoriesState, setCategoriesState] = useState(
     categories.map((category) => ({
       ...category,
@@ -53,7 +53,7 @@ const Catrender = ({ data, Qno ,answers ,index}) => {
   };
 
 useEffect(()=>{
-    answers[index].questionID=data._id;
+    answers[index].questionId=data._id;
     answers[index].response={questionno:Qno,description,answers:categoriesState}
 },[categoriesState])
 

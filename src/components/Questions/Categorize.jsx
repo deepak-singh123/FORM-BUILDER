@@ -20,6 +20,7 @@ export const Categorize = ({ Qno ,question}) => {
   const [descimageloading,setdescimageloading]= useState(false);
   const [selecteddescImage, setSelecteddescImage] = useState(null);
   const dispatch = useDispatch();
+  
   useEffect(() => {
   if(question){
     if(question.image){

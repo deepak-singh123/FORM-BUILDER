@@ -6,11 +6,12 @@ import cloudinary from "cloudinary";
 import upload from "./middleware/multer.js";
 import fs from "fs";
 import { Form } from "./models/form.js";
+import { Response } from "./models/response.js";
 
 dotenv.config();
 
 const app = express();
-app.use(cors({origin:"http://localhost:5173",credentials:true}));
+app.use(cors({origin:"http://localhost:5174",credentials:true}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -121,6 +122,43 @@ app.get("/getform/:id", async (req, res) => {
       return res.status(500).json({ message: "An error occurred while fetching the form" });
     }
   });
+
+  app.post("/submit-form/:uid", async (req, res) => {
+    const { uid } = req.params;
+    const data = req.body;
+  
+    try {
+      const form = await Form.findOne({ uid: uid });
+      if (!form) {
+        return res.status(404).json({ message: "Form not found" });
+      }
+  
+      let response = await Response.findOne({ formId: form._id });
+  
+      if (!response) {
+        response = await Response.create({
+          formId: form._id,
+          answers: data.answers,
+          submittedAt: Date.now(),
+        });
+      } else {
+        await response.updateOne({
+          answers: data.answers,
+          submittedAt: Date.now(),
+        });
+      }
+  
+      // Avoid returning MongoDB objects directly; sanitize them or use `.toObject()`.
+      return res
+        .status(200)
+        .json({ message: "Form submitted successfully", response: response.toObject() });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      return res.status(500).json({ message: "An error occurred while submitting the form" });
+    }
+  });
+  
+
 
 
 mongoose.connect(process.env.MONGO_URL)

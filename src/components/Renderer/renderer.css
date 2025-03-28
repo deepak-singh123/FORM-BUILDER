@@ -30,3 +30,20 @@
     object-fit: cover;
     margin-top: 5px;
 }
+.Submitted-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position:absolute;
+    font-size: 1.5rem;
+    color: #333;
+    z-index:100;
+    width:30%;
+    height:20%;
+    padding:50px;
+    background-color: rgba(79, 72, 72, 0.237);
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    gap: 10px;
+    top: 50%;
+}

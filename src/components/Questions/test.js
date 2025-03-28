@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+
+
+
+
+/*import React, { useEffect, useState } from "react";
 import "./Cloze.css";
 import { RxDragHandleDots2 } from "react-icons/rx";
 import { CiCircleRemove } from "react-icons/ci";
@@ -262,7 +266,7 @@ const handleAddOption = () => {
   );
 };
 
-export default Cloze;
+export default Cloze;*/
 
 
 /*
