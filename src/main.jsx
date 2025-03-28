@@ -5,7 +5,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'; // Corre
 import './index.css';
 import App from './App.jsx';
 import store from './store/store.jsx';
-import Renderinglist from './components/Renderer/renderinglist.jsx';
+import Renderinglist from './components/Renderer/Renderinglist.jsx';
 
 const router = createBrowserRouter([
   {

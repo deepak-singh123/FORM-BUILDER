@@ -58,7 +58,7 @@ const Header = () => {
 
             try{
               setloading(true);
-                const response = await fetch("http://localhost:3000/image-upload", {
+                const response = await fetch("https://quizzit.onrender.com/image-upload", {
                   method: "POST",
                   body: formData,
                 });
@@ -98,7 +98,7 @@ console.log(questions);
   }
  try{
   
-  const response = await fetch(`http://localhost:3000/save-form/${null}`, {
+  const response = await fetch(`https://quizzit.onrender.com/save-form/${uid}`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -135,7 +135,7 @@ const handlerenderer = async () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/save-form/${uid}`, {
+      const response = await fetch(`https://quizzit.onrender.com/save-form/${uid}`, {
         method: "POST",
         credentials: "include",
         headers: {

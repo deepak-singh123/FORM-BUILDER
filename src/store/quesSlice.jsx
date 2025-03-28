@@ -1,18 +1,18 @@
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from "uuid";
-
+import { useSelector } from 'react-redux';
 const initialState = {
   title:"",
   headerImage:null,
   questions: [],
-  
+ 
 };
 
 export const fetchquestions = createAsyncThunk('questions/fetchQuestions', async (uid) => {
     try{
       console.log(uid);
-  const response = await fetch(`http://localhost:3000/getform/${uid}`,{
+  const response = await fetch(`https://quizzit.onrender.com/getform/${uid}`,{
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
