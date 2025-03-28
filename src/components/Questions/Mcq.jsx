@@ -51,7 +51,7 @@ const Mcq = ({ Qno,question }) => {
 
       try {
         setDescImageLoading(true);
-        const response = await fetch("http://localhost:3000/image-upload", {
+        const response = await fetch("https://quizzit.onrender.com/image-upload", {
           method: "POST",
           body: formData,
         });

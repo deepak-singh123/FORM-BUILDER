@@ -17,7 +17,7 @@ console.log("answers=",answers);
 useEffect(() => {
     const fetchForm = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/getform/${id}`, {
+        const response = await fetch(`https://quizzit.onrender.com/getform/${id}`, {
           method: "GET",
           credentials: "include",
         });
@@ -41,7 +41,7 @@ useEffect(() => {
       answers:answers
     }
     try{
-    const response = await fetch(`http://localhost:3000/submit-form/${id}`, {
+    const response = await fetch(`https://quizzit.onrender.com/submit-form/${id}`, {
       method: "POST",
       credentials: "include",
       headers: {
