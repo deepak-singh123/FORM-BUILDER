@@ -288,6 +288,9 @@ const Cloze = ({ Qno, question }) => {
               </div>
             )}
           </Droppable>
+          <button className="add-word-btn" onClick={handleAddOption}>
+          Add Option
+        </button>
         </DragDropContext>
       </div>
     </div>
