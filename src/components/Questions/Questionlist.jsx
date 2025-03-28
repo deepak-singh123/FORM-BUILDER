@@ -3,7 +3,7 @@ import { Categorize } from "./Categorize";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchquestions } from "../../store/quesSlice";
 import Cloze from "./Cloze";
-import Mcq from "./mcq";
+import Mcq from "./Mcq";
 
 export const Questionlist = () => {
     const dispatch = useDispatch();
