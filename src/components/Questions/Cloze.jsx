@@ -39,15 +39,15 @@ const Cloze = ({ Qno, question }) => {
     let preview = sentence;
 
     underlinedWords.forEach((word) => {
-      
-      if(word.type !== "extra"){
-      const regex = new RegExp(`\\b${word.text}\\b`, "g");
-      preview = preview.replace(regex, "___");}
+      if (word.type !== "extra") {
+        const regex = new RegExp(`\\b${word.text}\\b`, "g");
+        preview = preview.replace(regex, "___");
+      }
     });
-
 
     setPreviewText(preview);
   };
+
   const handleWordTextChange = (index, value) => {
     const updatedWords = [...underlinedWords];
     updatedWords[index] = { ...updatedWords[index], text: value };
@@ -55,21 +55,31 @@ const Cloze = ({ Qno, question }) => {
   };
 
   const handleCheckboxChange = (index) => {
-    // Create a deep copy of the object at the specified index
     const updatedWords = [...underlinedWords].map((word, i) =>
       i === index ? { ...word, isselected: !word.isselected } : word
     );
-  
+
     setUnderlinedWords(updatedWords);
   };
-  
 
   const handleSentenceChange = (e) => {
     setSentence(e.target.value);
   };
 
-  const handleMouseUp = () => {
-    const selection = window.getSelection().toString().trim();
+  const handleTextSelection = (event) => {
+    if (event.target.tagName === "INPUT" && event.target.type === "checkbox") {
+      return;
+    }
+
+    let selection = window.getSelection().toString().trim();
+
+    if (!selection && document.activeElement) {
+      selection = document.activeElement.value.substring(
+        document.activeElement.selectionStart,
+        document.activeElement.selectionEnd
+      ).trim();
+    }
+
     if (selection) {
       const words = selection.split(/\s+/);
       setSelectedWords(words);
@@ -90,7 +100,7 @@ const Cloze = ({ Qno, question }) => {
           id: uuidv4(),
           text: word,
           isselected: true,
-          type:"underlined"
+          type: "underlined"
         })),
       ]);
     }
@@ -98,11 +108,11 @@ const Cloze = ({ Qno, question }) => {
     setSelectedWords([]);
   };
 
-const handleAddOption = () => {
+  const handleAddOption = () => {
     const newOption = {
       id: uuidv4(),
-      text: "", 
-      isselected: false, 
+      text: "",
+      isselected: false,
       type: "extra",
     };
     setUnderlinedWords((prevWords) => [...prevWords, newOption]);
@@ -157,14 +167,13 @@ const handleAddOption = () => {
     setUnderlinedWords(items);
   };
 
-
   const saveDataToRedux = () => {
     const questionData = {
       type: "cloze",
       points,
       preview: previewText,
       sentence,
-      options:underlinedWords,
+      options: underlinedWords,
       image: selectedImage,
     };
     dispatch(addOrUpdateQuestion({ index: Qno, questionData }));
@@ -172,8 +181,8 @@ const handleAddOption = () => {
 
   useEffect(() => {
     saveDataToRedux();
-  }, [points, previewText, underlinedWords, selectedImage])
-  
+  }, [points, previewText, underlinedWords, selectedImage]);
+
   return (
     <div className="cloze-container">
       <div className="cloze-header">
@@ -217,6 +226,7 @@ const handleAddOption = () => {
           <RiDeleteBack2Fill size={30} onClick={() => setSelectedImage(null)} />
         </div>
       )}
+
       <div className="underline-btn-container">
         <label>Sentence:</label>
         <button className="underline-btn" onClick={handleUnderlineWord}>
@@ -224,13 +234,16 @@ const handleAddOption = () => {
         </button>
       </div>
 
-      <div className="sentence-input">
+      <div
+        className="sentence-container"
+        onMouseUp={handleTextSelection}
+        onTouchEnd={handleTextSelection}
+      >
         <input
           type="text"
           value={sentence}
           onChange={handleSentenceChange}
           placeholder="Enter the sentence"
-          onMouseUp={handleMouseUp}
         />
       </div>
 
@@ -249,8 +262,8 @@ const handleAddOption = () => {
                         {...provided.dragHandleProps}
                         className="underlined-word"
                       >
-                       <div className="fill-option">
-                        <RxDragHandleDots2 size={30} />
+                        <div className="fill-option">
+                          <RxDragHandleDots2 size={30} />
                           <input
                             type="checkbox"
                             checked={word.isselected}
@@ -261,8 +274,6 @@ const handleAddOption = () => {
                             type="text"
                             value={word.text}
                             onChange={(e) => handleWordTextChange(index, e.target.value)}
-                            placeholder={`Option ${index + 1}`}
-                            className="option-input"
                           />
                           <CiCircleRemove
                             size={30}
@@ -277,14 +288,8 @@ const handleAddOption = () => {
               </div>
             )}
           </Droppable>
-
-          <button className="add-word-btn" onClick={handleAddOption}>
-          Add Option
-        </button>
         </DragDropContext>
-        
       </div>
-      
     </div>
   );
 };
